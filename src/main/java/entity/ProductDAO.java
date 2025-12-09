@@ -17,30 +17,31 @@ import java.util.Optional;
 /**
  *
  * @author Gokhan
+ * modified by braydenphanna
  */
-public class CustomerDAO implements DAO<Customer>
+public class ProductDAO implements DAO<Product>
 {   
-    public CustomerDAO() {
+    public ProductDAO() {
         
     }
-    List<Customer> customers;
+    List<Product> customers;
     /**
      * Get a single customer entity as a customer object
      * @param id
      * @return 
      */
     @Override
-    public Optional<Customer> get(int id) {
+    public Optional<Product> get(int id) {
         DB db = DB.getInstance();
         ResultSet rs = null;
         try {
-            String sql = "SELECT * FROM HD_Customer WHERE Customer_ID = ?";
+            String sql = "SELECT * FROM HD_Product WHERE Product_ID = ?";
             PreparedStatement stmt = db.getPreparedStatement(sql);
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
-            Customer customer = null;
+            Product customer = null;
             while (rs.next()) {
-                customer = new Customer(rs.getInt("Customer_ID"), rs.getString("Customer_First_Name"), rs.getString("Customer_Last_Name"), rs.getString("Customer_Favorite_Meal"));
+                customer = new Product(rs.getInt("Product_ID"), rs.getString("Product_Name"), rs.getString("Product_Description"), rs.getString("Product_Color"), rs.getString("Product_Size"), rs.getString("Product_Price"));
             }
             return Optional.ofNullable(customer);
         } catch (SQLException ex) {
@@ -57,16 +58,16 @@ public class CustomerDAO implements DAO<Customer>
      * @return 
      */
     @Override
-    public List<Customer> getAll() {
+    public List<Product> getAll() {
         DB db = DB.getInstance();
         ResultSet rs = null;
         customers = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM HD_Customer";
+            String sql = "SELECT * FROM HD_Product";
             rs = db.executeQuery(sql);
-            Customer customer = null;
+            Product customer = null;
             while (rs.next()) {
-                customer = new Customer(rs.getInt("Customer_ID"), rs.getString("Customer_First_Name"), rs.getString("Customer_Last_Name"), rs.getString("Customer_Favorite_Meal"));
+                customer = new Product(rs.getInt("Product_ID"), rs.getString("Product_Name"), rs.getString("Product_Description"), rs.getString("Product_Color"), rs.getString("Product_Size"), rs.getString("Product_Price"));
                 customers.add(customer);
             }
             return customers;
@@ -81,16 +82,18 @@ public class CustomerDAO implements DAO<Customer>
      * @param customer 
      */
     @Override
-    public void insert(Customer customer)
+    public void insert(Product customer)
     {
         DB db = DB.getInstance();
         try {
-            String sql = "INSERT INTO HD_Customer(Customer_ID, Customer_First_Name, Customer_Last_Name, Customer_Favorite_Meal) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO HD_Product(Product_ID, Product_Name, Product_Description, Product_Color, Product_Size, Product_Price) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = db.getPreparedStatement(sql);
-            stmt.setInt(1, customer.getID());
-            stmt.setString(2, customer.getFirstName());
-            stmt.setString(3, customer.getLastName());
-            stmt.setString(4, customer.getFavoriteMeal());
+            stmt.setInt(1, customer.getProductID());
+            stmt.setString(2, customer.getProductName());
+            stmt.setString(3, customer.getProductDescription());
+            stmt.setString(4, customer.getProductColor());
+            stmt.setString(5, customer.getProductSize());
+            stmt.setString(6, customer.getProductPrice());
             int rowInserted = stmt.executeUpdate();
             if (rowInserted > 0) {
                 System.out.println("A new customer was inserted successfully!");
@@ -105,15 +108,17 @@ public class CustomerDAO implements DAO<Customer>
      * @param customer
      */
     @Override
-    public void update(Customer customer) {
+    public void update(Product customer) {
         DB db = DB.getInstance();
         try {
-            String sql = "UPDATE HD_Customer SET Customer_First_Name=?, Customer_Last_Name=?, Customer_Favorite_Meal=? WHERE Customer_ID=?";
+            String sql = "UPDATE HD_Product SET Product_Name=?, Product_Description=?, Product_Color=?, Product_Size=?, Product_Price=? WHERE Product_ID=?";
             PreparedStatement stmt = db.getPreparedStatement(sql);
-            stmt.setString(1, customer.getFirstName());
-            stmt.setString(2, customer.getLastName());
-            stmt.setString(3, customer.getFavoriteMeal());
-            stmt.setInt(4, customer.getID());
+            stmt.setString(1, customer.getProductName());
+            stmt.setString(2, customer.getProductDescription());
+            stmt.setString(3, customer.getProductColor());
+            stmt.setString(4, customer.getProductSize());
+            stmt.setString(5, customer.getProductPrice());
+            stmt.setInt(6, customer.getProductID());
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("An existing customer was updated successfully!");
@@ -128,12 +133,12 @@ public class CustomerDAO implements DAO<Customer>
      * @param customer 
      */
     @Override
-    public void delete(Customer customer) {
+    public void delete(Product customer) {
         DB db = DB.getInstance();
         try {
-            String sql = "DELETE FROM HD_Customer WHERE Customer_ID = ?";
+            String sql = "DELETE FROM HD_Product WHERE Product_ID = ?";
             PreparedStatement stmt = db.getPreparedStatement(sql);
-            stmt.setInt(1, customer.getID());
+            stmt.setInt(1, customer.getProductID());
             int rowsDeleted = stmt.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("A customer was deleted successfully!");
@@ -153,7 +158,7 @@ public class CustomerDAO implements DAO<Customer>
         ResultSet rs = null;
         List<String> headers = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM HD_Customer WHERE Customer_ID = -1";//We just need this sql query to get the column headers
+            String sql = "SELECT * FROM HD_Product WHERE Product_ID = -1";//We just need this sql query to get the column headers
             rs = db.executeQuery(sql);
             ResultSetMetaData rsmd = rs.getMetaData();
             //Get number of columns in the result set

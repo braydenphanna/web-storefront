@@ -14,7 +14,9 @@
     <input type="password" name="password" required><br><br>
 
     <button type="submit">Login</button>
+    <button type="submit" name="guest" value="1">Continue as a Guest</button>
 </form>
+
 
 <%
     String error = request.getParameter("error");

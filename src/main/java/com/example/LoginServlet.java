@@ -16,12 +16,20 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String guest = request.getParameter("guest");
+        HttpSession session = request.getSession();
+
+        if ("1".equals(guest)) {
+            session.setAttribute("user", "guest");
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
 
         // Simple hardcoded auth - replace with DB/LDAP/etc. later
         if ("admin".equals(user) && "password".equals(pass)) {
-            HttpSession session = request.getSession();
             session.setAttribute("user", user);
             response.sendRedirect("index.jsp");
         } else {
