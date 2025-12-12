@@ -14,38 +14,58 @@ public class ShoeProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
 
-        String productName = request.getParameter("productName");
-        String unitPriceStr = request.getParameter("unitPrice");
-        String quantityStr = request.getParameter("quantity");
+            String action = request.getParameter("action");
 
-        double unitPrice = Double.parseDouble(unitPriceStr);
-        int quantity = Integer.parseInt(quantityStr);
+            String productName = request.getParameter("productName");
+            String productID = request.getParameter("productID");
+            String unitPriceStr = request.getParameter("unitPrice");
+            String quantityStr = request.getParameter("quantity");
 
-        double subtotal = unitPrice * quantity;
+            // When user selects a shoe (no quantity yet): reload shoes.jsp
+            if ("select".equals(action)) {
+                request.getRequestDispatcher("/shoes.jsp")
+                        .forward(request, response);
+                return;
+            }
 
-        double discountPercent = 0.0;
-        if (quantity >= 10) {
-            discountPercent = 10.0;      // 10+ items → 10%
-        } else if (quantity >= 5) {
-            discountPercent = 5.0;       // 5–9 items → 5%
+            // When Calculate button is clicked
+            if ("calculate".equals(action)) {
+
+                if (productName == null || productName.isEmpty()
+                        || unitPriceStr == null || unitPriceStr.isEmpty()
+                        || quantityStr == null || quantityStr.isEmpty()) {
+
+                    // missing values → go back to form
+                    request.getRequestDispatcher("/shoeorder.jsp")
+                            .forward(request, response);
+                    return;
+                }
+
+                double unitPrice = Double.parseDouble(unitPriceStr);
+                int quantity = Integer.parseInt(quantityStr);
+
+                double subtotal = unitPrice * quantity;
+                double discountPercent = 0.0;
+
+                if (quantity >= 10) discountPercent = 10.0;
+                else if (quantity >= 5) discountPercent = 5.0;
+
+                double discountAmount = subtotal * (discountPercent / 100.0);
+                double total = subtotal - discountAmount;
+
+                request.setAttribute("productID", productID);
+                request.setAttribute("productName", productName);
+                request.setAttribute("unitPrice", unitPrice);
+                request.setAttribute("quantity", quantity);
+                request.setAttribute("discountPercent", discountPercent);
+                request.setAttribute("discountAmount", discountAmount);
+                request.setAttribute("subtotal", subtotal);
+                request.setAttribute("total", total);
+
+                request.getRequestDispatcher("/shoeResult.jsp")
+                        .forward(request, response);
+            }
         }
-
-        double discountAmount = subtotal * (discountPercent / 100.0);
-        double total = subtotal - discountAmount;
-
-        // put values on request so JSP can show them
-        request.setAttribute("productName", productName);
-        request.setAttribute("unitPrice", unitPrice);
-        request.setAttribute("quantity", quantity);
-        request.setAttribute("discountPercent", discountPercent);
-        request.setAttribute("discountAmount", discountAmount);
-        request.setAttribute("subtotal", subtotal);
-        request.setAttribute("total", total);
-
-        // forward to result JSP
-        request.getRequestDispatcher("/shoeResult.jsp")
-                .forward(request, response);
-    }
 }

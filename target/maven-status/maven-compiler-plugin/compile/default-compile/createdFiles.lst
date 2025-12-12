@@ -1,0 +1,10 @@
+com/example/ProductUpdateServlet.class
+com/example/ProductDeleteServlet.class
+com/example/ShoeProductServlet.class
+entity/Product.class
+com/example/LoginServlet.class
+com/example/LogoutServlet.class
+com/example/ProductCreateServlet.class
+core/DB.class
+entity/ProductDAO.class
+entity/DAO.class

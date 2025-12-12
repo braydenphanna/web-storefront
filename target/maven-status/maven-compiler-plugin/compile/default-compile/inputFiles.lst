@@ -1,0 +1,10 @@
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/LoginServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/LogoutServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/ProductCreateServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/ProductDeleteServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/ProductUpdateServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/com/example/ShoeProductServlet.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/core/DB.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/entity/DAO.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/entity/Product.java
+/mnt/ssd/School/221/javaLoginWebApp/src/main/java/entity/ProductDAO.java
