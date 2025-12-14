@@ -1,3 +1,2 @@
 # web-storefront
-username: admin
-password: password
+username: admin<br>password: password
