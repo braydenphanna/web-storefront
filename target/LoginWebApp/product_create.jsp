@@ -9,6 +9,9 @@
 
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Create Product</title>
+</head>
 <body>
 
 <form action="index.jsp">

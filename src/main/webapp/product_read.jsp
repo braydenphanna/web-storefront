@@ -12,6 +12,9 @@
 
 <!DOCTYPE html>
 <html>
+<head>
+    <title>All Products</title>
+</head>
 <body>
 
 <form action="index.jsp">
@@ -27,7 +30,7 @@
     <th>Description</th>
     <th>Color</th>
     <th>Size</th>
-    <th>Price</th>
+    <th>Price ($)</th>
 </tr>
 
 <%

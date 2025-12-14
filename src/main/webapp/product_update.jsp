@@ -10,6 +10,9 @@
 
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Update Product</title>
+</head>
 <body>
 
 <form action="index.jsp">

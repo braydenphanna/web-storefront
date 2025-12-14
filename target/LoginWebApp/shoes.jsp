@@ -1,10 +1,8 @@
 <%@ page language="java" import="entity.ProductDAO, entity.Product, java.util.*" %>
-
 <%
     ProductDAO dao = new ProductDAO();
     List<Product> list = dao.getAll();
 
-    // read selection (ID)
     String selectedID = request.getParameter("productID");
     String priceText = "";
     String selectedName = "";
@@ -12,12 +10,12 @@
     String color = "";
     String size = "";
 
-   if (selectedID != null && !selectedID.isEmpty() && selectedID.matches("\\d+")) {
+   if (selectedID != null && !selectedID.isEmpty()) {
         int id = Integer.parseInt(selectedID);
         Optional<Product> opt = dao.get(id);
         if (opt.isPresent()) {
             Product p = opt.get();
-            priceText = "$"+String.valueOf(p.getProductPrice());
+            priceText = p.getProductPrice();
             selectedName = p.getProductName();
             description = p.getProductDescription();
             color = p.getProductColor();
@@ -50,7 +48,7 @@
 
         <% for (Product p : list) { %>
             <option value="<%= p.getProductID() %>"
-                <%= (selectedID != null && selectedID.equals(String.valueOf(p.getProductID()))) ? "selected" : "" %>>
+                <%= (selectedID != null && selectedID.equals(p.getProductID())) ? "selected" : "" %>>
                 <%= p.getProductName() %>
             </option>
         <% } %>
@@ -58,7 +56,7 @@
     </select><br><br>
 
     <label>Unit Price:</label>
-    <span><%= priceText.isEmpty() ? "" : priceText %></span><br><br>
+    <span><%= priceText.isEmpty() ? "" : "$" + priceText %></span><br><br>
 
     <input type="hidden" name="unitPrice" value="<%= priceText %>">
     <input type="hidden" name="productName" value="<%= selectedName %>">
